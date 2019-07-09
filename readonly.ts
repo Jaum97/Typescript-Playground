@@ -13,4 +13,4 @@ type B = Writable<readonly number[]>;
 
 // [string, boolean]
 type C = Writable<readonly [string, boolean]>;
-Caveats #
+
