@@ -14,3 +14,8 @@ export const pickKeys = < T,
         }
         return obj
     }
+type ShortPick = <T, K extends keyof T>(x:T, y: Array<K>) => Pick<T,K> | unknown  
+
+const shortPick: ShortPick = (x, y) => y.reduce((a, b) => Object.assign(a, {
+    [b]: x[b]
+}), {})
