@@ -1,20 +1,21 @@
-type cellProp = ({ value: any }) => JSX.Element
+import { Column } from 'react-table'
 
-interface IReactTableExtraProps {
-	width?: number
-	filterable?: boolean
-	className?: string
-	id?: string
-	maxWidth?: number
-}
+type fnReturn<
+	T extends IReactTableExtraProps,
+	K extends { [x: string]: string }
+> = (header?: string, extraProps?: T, maskNames?: K) => Column<unknown>
 
-export const createTableCell = (cell: cellProp): any => <
-	T extends IReactTableExtraProps
+export const createReactTableCell = <
+	T extends IReactTableExtraProps,
+	K extends { [x: string]: string }
 >(
+	cell: cellProp,
+): fnReturn<T, K> => (
 	header = '',
 	extraProps?: T,
-): any => ({
-	Header: header,
+	maskNames?: K,
+): Column<unknown> => ({
+	Header: maskNames ? maskNames[header] : header,
 	accessor: header,
 	Cell: cell,
 	...extraProps,
