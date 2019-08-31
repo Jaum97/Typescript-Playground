@@ -6,12 +6,21 @@ type validProp = string | number | symbol
 type pickPropType = <T extends validProp>(prop: T) => <V extends {[key in T]: any}>(obj: V) => V[T]
 
 /**
- * pickProp - HOF that receives prop then returns a function 
+ * - pickProp - HOF that receives prop then returns a function 
+ *  that receives obj and picks prop from object
  * @param prop property to be picked
- * @return function that will pick that prop from the passed object
+ * @returns function that receives obj and picks prop from object
  * 
  * @param obj object from which the prop will be picked
- * @return property prop from obj
+ * @returns property prop from obj
+ * 
+ * @example 
+ * // returns 'john'
+ * pickProp('name')({name: 'john'}) 
+ * 
+ * @example
+ * // return (obj) => obj['name']
+ * pickProp('name')
  */
 
 const pickProp: pickPropType = prop => obj => obj[prop]
