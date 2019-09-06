@@ -59,9 +59,9 @@ export const resolveObject = async function<T extends ObjectWithPromise>(
 ): Promise<T> {
 	const values = await Promise.all(Object.values(obj))
 
-	const objectReducer = (obj, k, i) => Object.assign(obj, { [k]: values[i] })
+	const keysReducer = (obj, k, i) => Object.assign(obj, { [k]: values[i] })
 
-	const res = Object.keys(obj).reduce(objectReducer, {})
+	const res = Object.keys(obj).reduce(keysReducer, {})
 
 	return res as T
 }
