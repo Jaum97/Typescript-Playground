@@ -14,13 +14,11 @@
  */
 
 export const cleanObjFalsyKeys = <T>(obj: T): T => {
-	const values = Object.values(obj)
-	
-	const newObj = Object.keys(obj).reduce((a,b,i) => {
-		const shouldAssign = !!values[i]
-
-		return shouldAssign ? Object.assign(a, { [b]: values[i] }) : a
-	},{})
-
-	return newObj as T
+	const cleanObj = {}
+	for(const key in obj){
+		if(obj[key]){
+			cleanObj[key] = obj[key]
+		}
+	}
+	return cleanObj
 }
