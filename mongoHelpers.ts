@@ -36,3 +36,15 @@ export function getMongoDocuments<T extends ValidMongoDocument>(
 		return collection.find()
 	}
 }
+
+// TODO: test
+export function updateMongoDocument<
+	T extends ValidMongoDocument,
+	P extends Partial<T>
+>(
+	collection: Model<T, {}>,
+): (_id: ValidMongoId, payload: P) => DocumentQuery<Array<T>, T, {}> {
+	return function(_id, payload) {
+		return collection.findOneAndUpdate(_id, payload)
+	}
+}
