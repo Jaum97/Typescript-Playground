@@ -20,7 +20,7 @@ export function getMongoDocumentById<T extends ValidMongoDocument>(
 	return function(_id: ValidMongoId): DocumentQuery<T, T, {}> {
 		if (!_id) {
 			throw {
-				code: 420,
+				code: 400,
 				message: 'O id é obrigatório',
 			}
 		}
@@ -43,7 +43,7 @@ export function updateMongoDocument<
 	P extends Partial<T>
 >(
 	collection: Model<T, {}>,
-): (_id: ValidMongoId, payload: P) => DocumentQuery<Array<T>, T, {}> {
+): (_id: ValidMongoId, payload: P) => DocumentQuery<T, T, {}> {
 	return function(_id, payload) {
 		return collection.findOneAndUpdate(_id, payload)
 	}
