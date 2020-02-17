@@ -41,4 +41,4 @@ const obj = {
 	contra: [1,2,3]
 }
 
-const o = validateValues(obj, { 0: true, []: true}) //  : (
+const o = validateValues(obj, { 0: true, array: true}) //  : (
