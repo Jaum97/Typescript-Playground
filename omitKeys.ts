@@ -18,3 +18,22 @@ export const omitKeys = < T,
         }
         return obj
     }
+
+    
+    function omitKeys2(obj, keysToOmit) {
+
+      const created = {}
+
+      const objKeys = Object.keys(obj)
+
+      for(const key of objKeys) {
+        
+        if(!keysToOmit.includes(key) ) {
+
+          created[key] = obj[key]
+          
+        }
+      }
+
+      return created
+    }
