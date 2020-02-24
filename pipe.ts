@@ -43,6 +43,34 @@ type Pipe2<F extends GenericFn[]> = {
 	: 1
 ]
 
+type Pipe4<F extends GenericFn[]> = {
+	0: Pipe4<Tail<F>>
+	1: Head<F>
+	2: never
+} [
+	HasTail<F> extends true
+	?	[ReturnType<Head<F>>] extends Parameters<Head<Tail<F>>>
+		? 0
+		: 2
+	: 1
+]
+
+type test06 = Pipe4<[typeof sum, typeof toString, typeof toArray]>
+
+type test10 = HasTail< [(a: number) => string, (a: number) => number[]]>
+
+type test11 = [ReturnType<Head<[(a: number) => string, (a: number) => number[]]>>] extends Parameters<Head<Tail<[(a: number) => string, (a: number) => number[]]>>> ? true : false
+
+type test07 = [ReturnType<Head<[typeof sum, typeof toArray]>>]
+type test08 = Parameters<Head<Tail<[typeof sum, typeof toArray]>>>
+type test09 = test07 extends test08 ? true : false
+
+const sum = (a: number,b: number = 0): number => a + b
+
+const toString = (a: number): number => Number(a)
+
+const toArray = (a: number): Array<number> => [a]
+
 type test02<F extends GenericFn[]> = [ReturnType<Head<F>>] extends Parameters<Head<Tail<F>>> ? true : false
 
 type test04 = ReturnType<Head<[typeof sum, typeof toString, typeof toArray]>>
@@ -51,11 +79,6 @@ type test05 = Parameters<Head<Tail<[typeof sum, typeof toString, typeof toArray]
 
 type test03 = test02<[typeof sum, typeof toArray]>
 
-const sum = (a: number,b: number = 0): number => a + b
-
-const toString = (a: number): string => String(a)
-
-const toArray = (a: string): Array<string> => [a]
 
 type test01 = Pipe3<[typeof sum, typeof toString, typeof toArray]>
 
