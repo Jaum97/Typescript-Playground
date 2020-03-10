@@ -1,3 +1,16 @@
+export const isValidObj = (obj): boolean =>
+	obj === Object(obj) && !Array.isArray(obj)
+
+export const isObjEmpty = (obj): boolean => !(obj && Object.keys(obj).length)
+
+/**
+ * - isObjValidAndNotEmpty checks if object is valid and not empty
+ * @param x object to verify
+ * @returns boolean
+ */
+export const isObjValidAndNotEmpty = (x): boolean =>
+	isValidObj(x) && !isObjEmpty(x)
+
 export function replaceInTemplate(template: string, value: string, matcher = '{PARAM}'): string {
 	return String(template).replace(matcher, value)
 }
