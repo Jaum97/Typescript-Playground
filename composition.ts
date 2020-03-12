@@ -1,3 +1,11 @@
-function compose<A, B, C>(f: (arg: A) => B, g: (arg: B) => C): (arg: A) => C {
-    return x => g(f(x));
-}
+const compose = (...fns) => (value) => fns.reduceRight((currVal, currFn) => currFn(currVal), value)
+
+const add = (a, b) => a + b
+
+const add5 = (a) => add(a, 5)
+
+const toTuple = (a) => [a, a]
+
+const t00 = compose(toTuple, add5)(42)
+
+t00 // [ 47, 47 ]
