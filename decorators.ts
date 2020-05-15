@@ -18,3 +18,15 @@ declare type ParameterDecorator = (
   propertyKey: string | symbol, 
   parameterIndex: number
 ) => void;
+
+@Frozen
+class IceCream {}
+
+function Frozen(constructor: Function) {
+  Object.freeze(constructor);
+  Object.freeze(constructor.prototype);
+}
+
+console.log(Object.isFrozen(IceCream)); // true
+
+class FroYo extends IceCream {} // error, cannot be extended
