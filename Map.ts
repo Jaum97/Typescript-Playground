@@ -17,5 +17,7 @@ const arr3 = arr1.map(fn)
 const map1: Map<number, number> = new Map([[1,1],[2,2],[3,3]])
 
 console.time('t')
+
 const val1 = map1.get(1)
+
 console.timeEnd('t')
