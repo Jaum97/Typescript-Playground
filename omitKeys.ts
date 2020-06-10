@@ -37,3 +37,22 @@ export const omitKeys = < T,
 
       return created
     }
+
+
+export const omitKeys3 = <K extends ValidPropType>(keys: Array<K>) => <
+	O extends { [key in K]?: any }
+>(
+	obj: O
+): Omit<O, K> => {
+	const created = {} as O
+
+	const objKeys = Object.keys(obj)
+
+	for (const key of objKeys) {
+		if (!keys.includes(key as any)) {
+			;(created as any)[key] = (obj as any)[key]
+		}
+	}
+
+	return created
+}
