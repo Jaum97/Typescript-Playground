@@ -29,7 +29,7 @@ export function omitTypenameRecursive<T>(obj: T): T {
 		const val = obj[k]
 
 		if (typeof val == 'object' && val !== null && !Array.isArray(val)) {
-			created[k] = omitTypenameRecursive(omitTypename(val))
+			created[k] = omitTypenameRecursive(val)
 		} else if (Array.isArray(val)) {
 			created[k] = val.map(omitTypenameRecursive)
 		} else if (k !== '__typename') {
