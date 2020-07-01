@@ -40,3 +40,48 @@ const t00 = guarded([2, 2, 2])
 const t01 = createGuard((err: any): string => 'potatoes')(callback)([1,2])
 
 //const t01: string
+
+
+
+
+
+/// NEEDS TESTING
+
+
+export const passThrough = (callback: (...params: any[]) => any) => <T>(
+	res: T
+): T => {
+	callback()
+	return res
+}
+
+export const createGuardFinally = <H extends (error: IError) => any>(handler: H) => <
+	F extends (...params: any[]) => any
+>(
+	callback: F,
+	finallyCallback?: () => void
+) => <P extends Parameters<F>>(
+	...props: P
+): ReturnType<F> | ReturnType<H> | void => {
+	// need to nest try catchs to safely check whether callback is async
+
+	let isAsync = false
+
+	try {
+		const res = callback(...props)
+
+		isAsync = Boolean(res?.then)
+
+		if (!isAsync) return res
+
+		if (!finallyCallback) return res?.catch(handleError)
+
+		return res?.catch(handleError)?.then(passThrough(finallyCallback))
+	} catch (error) {
+		return handler(error)
+	} finally {
+		if (!isAsync) {
+			finallyCallback?.()
+		}
+	}
+}
