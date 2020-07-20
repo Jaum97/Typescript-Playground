@@ -12,16 +12,27 @@ export type ValidParamTypes = keyof typeof ParamTypes;
 
 export type ValidParamValueTypes = "UNIQUE" | "INTERVAL";
 
-export type ParamTypeToValueMap<T extends ValidParamTypes> = T extends "BOOLEAN"
+export type ParamTypeToObjectValueMap<
+  T extends ValidParamTypes,
+  VT extends ValidParamValueTypes = undefined
+> = T extends "BOOLEAN"
   ? boolean
   : T extends "TIME"
-  ? Date
+  ? VT extends "INTERVAL"
+    ? ParamIntervalObject<T>
+    : Date
   : T extends "MONEY"
-  ? string
+  ? VT extends "INTERVAL"
+    ? ParamIntervalObject<T>
+    : string
   : T extends "TEXT"
-  ? string
+  ? VT extends "INTERVAL"
+    ? ParamIntervalObject<T>
+    : string
   : T extends "NUMBER"
-  ? number
+  ? VT extends "INTERVAL"
+    ? ParamIntervalObject<T>
+    : number
   : any;
 
 export interface IParameterItem<
@@ -32,22 +43,24 @@ export interface IParameterItem<
   description: string;
   type: ValidParamTypes;
   valueType: ValidParamValueTypes;
-  value: ParamTypeToValueMap<T>;
+  value: ParamTypeToObjectValueMap<T, VT>;
 }
 
-export interface ParamIntervalObject {
-  start: any;
-  end: any;
+export interface ParamIntervalObject<T extends ValidParamTypes = undefined> {
+  start: ParamTypeToObjectValueMap<T>;
+  end: ParamTypeToObjectValueMap<T>;
 }
 
-const test: IParameterItem = {
-    name: 'Banana Expiration Date',
-    description: 'The date the banana goes yuck',
-    type: 'TIME',
-    valueType: 'UNIQUE',
-    value: ''
-}
+const test = {
+  name: "Banana Expiration Date",
+  description: "The date the banana goes yuck",
+  type: "TIME" as "TIME",
+  valueType: "INTERVAL" as "INTERVAL",
+  value: null as ParamIntervalObject<'TIME'>,
+};
 
-const fn = <T extends IParameterItem<T['type'], T['valueType']>>(obj: T) => obj
+const fn = <T extends IParameterItem<T["type"], T["valueType"]>>(
+  obj: T
+): IParameterItem<T["type"], T["valueType"]> => obj;
 
-const t00 = fn(test)
+const t00 = fn(test);
